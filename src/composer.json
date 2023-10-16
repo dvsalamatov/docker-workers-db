@@ -1,0 +1,13 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "php-amqplib/php-amqplib": ">=3.0",
+        "ext-curl": "*",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "":"./"
+        }
+    }
+}

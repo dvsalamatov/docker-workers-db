@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.25
+    env_file:
+      - .env
+    ports:
+      - ${SITE_PORT}:80
+    volumes:
+      - ./src:/var/www/php
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: php_base
+    working_dir: /var/www/php
+    volumes:
+      - ./src:/var/www/php
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
+  composer_installation:
+    container_name: composer_installation
+    image: composer
+    volumes:
+      - ./src:/app
+    command: composer install --ignore-platform-reqs
+    depends_on:
+      - php
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: php_worker
+    container_name: task-worker
+    working_dir: /var/www/php
+    volumes:
+      - ./src:/var/www/php
+    depends_on:
+      - composer_installation
+      - php
+
+  db:
+    image: mariadb:11
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d/:rw
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: "/usr/bin/mariadb --user=root --password=$$DB_ROOT_PASSWORD --execute \"SHOW DATABASES;\""
+      interval: 3s
+      timeout: 1s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    env_file:
+      - .env
+    ports:
+      - ${PMA_PORT}:80
+    environment:
+      PMA_ARBITRARY: 1
+    depends_on:
+      db:
+        condition: service_healthy
+
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: docker/rabbitmq/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - ${RABBIT_MANAGE_PORT}:15672
+      - ${RABBIT_SERVICE_PORT}:5672
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:15672"]
+      interval: 5s
+      retries: 10
+      timeout: 10s
+
+volumes:
+  rabbitmqdata:
+  dbdata:
