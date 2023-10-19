@@ -1,0 +1,24 @@
+parameters:
+  queue.name: hello
+
+services:
+  components\db\DB:
+    class: components\db\DB
+    factory: ['components\db\DB', 'getDb']
+  contracts\repository\UrlStatisticRepositoryInterface:
+    class: repository\UrlStatMariaDbRepository
+    arguments:
+      - '@components\db\DB'
+  contracts\queue\QueueInterface:
+    class: queue\Queue
+    arguments: ['%queue.name%']
+# TODO Use Autowire for Receiver and Sender
+  command\Receiver:
+    class: command\Receiver
+    arguments:
+      - '@contracts\queue\QueueInterface'
+      - '@contracts\repository\UrlStatisticRepositoryInterface'
+  command\Sender:
+    class: command\Sender
+    arguments:
+      - '@contracts\queue\QueueInterface'

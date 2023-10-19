@@ -10,7 +10,7 @@ use repository\dto\UrlStatDto;
 class Receiver
 {
     public function __construct(
-        private QueueInterface $queue,
+        private QueueInterface                  $queue,
         private UrlStatisticRepositoryInterface $urlStatisticRepository,
     ){}
 
@@ -21,9 +21,9 @@ class Receiver
 
     private function messageCallback(AMQPMessage $message): void
     {
-        $url = $message->body;
-        ['length' => $length, 'countLines' => $countLines] = $this->contentInfo($url);
-        $urlStatDto = new UrlStatDto($url, $length, $countLines, time());
+        ['length' => $length, 'countLines' => $countLines] = $this->contentInfo($message->body);
+
+        $urlStatDto = new UrlStatDto($message->body, $length, $countLines, time());
 
         $this->urlStatisticRepository->addStatistic($urlStatDto);
     }

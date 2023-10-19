@@ -3,7 +3,10 @@
         "vlucas/phpdotenv": "^5.5",
         "php-amqplib/php-amqplib": ">=3.0",
         "ext-curl": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "symfony/dependency-injection": "^6.0",
+        "symfony/config": "^6.0",
+        "symfony/yaml": "^6.0"
     },
     "autoload": {
         "psr-4": {

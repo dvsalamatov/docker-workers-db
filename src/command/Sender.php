@@ -12,6 +12,7 @@ class Sender
     public function run(): void
     {
         $this->queue->publish(new AMQPMessage('https://www.drive2.ru', ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]));
+
         $this->queue->close();
     }
 }

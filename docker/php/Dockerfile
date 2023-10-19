@@ -8,6 +8,7 @@ RUN set -xe \
         mariadb-client \
         libzip-dev \
         zip \
+        unzip \
     --no-install-recommends \
     && docker-php-ext-install \
         pdo \

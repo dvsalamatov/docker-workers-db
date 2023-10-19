@@ -6,7 +6,7 @@ use contracts\repository\UrlStatisticRepositoryInterface;
 use PDO;
 use repository\dto\UrlStatDto;
 
-class UrlStacMariaDbRepository implements UrlStatisticRepositoryInterface
+class UrlStatMariaDbRepository implements UrlStatisticRepositoryInterface
 {
     public function __construct(private PDO $db){}
 
