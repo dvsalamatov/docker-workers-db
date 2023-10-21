@@ -5,7 +5,7 @@ namespace contracts\repository;
 use repository\dto\ReportRaw;
 use repository\dto\UrlStatDto;
 
-interface UrlStatisticRepositoryInterface
+interface ReportRepositoryInterface
 {
     public function addStatistic(UrlStatDto $urlStatDto): void;
 

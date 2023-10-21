@@ -8,7 +8,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Sender
 {
-    private const SLEEP_INTERVAL_MULTIPLE = 0;
+    private const SLEEP_INTERVAL_MULTIPLE = 10;
 
     public function __construct(private QueueInterface $queue, private FileReaderInterface $fileReader){}
 

@@ -2,12 +2,12 @@
 
 namespace repository;
 
-use contracts\repository\UrlStatisticRepositoryInterface;
+use contracts\repository\ReportRepositoryInterface;
 use PDO;
 use repository\dto\ReportRaw;
 use repository\dto\UrlStatDto;
 
-class UrlStatMariaDbRepository implements UrlStatisticRepositoryInterface
+class ReportMariaDbRepository implements ReportRepositoryInterface
 {
     public function __construct(private PDO $db){}
 

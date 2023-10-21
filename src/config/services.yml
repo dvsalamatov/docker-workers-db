@@ -7,8 +7,8 @@ services:
   components\db\DB:
     class: components\db\DB
     factory: ['components\db\DB', 'getDb']
-  contracts\repository\UrlStatisticRepositoryInterface:
-    class: repository\UrlStatMariaDbRepository
+  contracts\repository\ReportRepositoryInterface:
+    class: repository\ReportMariaDbRepository
     arguments:
       - '@components\db\DB'
   contracts\queue\QueueInterface:
@@ -19,7 +19,7 @@ services:
     class: command\Receiver
     arguments:
       - '@contracts\queue\QueueInterface'
-      - '@contracts\repository\UrlStatisticRepositoryInterface'
+      - '@contracts\repository\ReportRepositoryInterface'
   command\Sender:
     class: command\Sender
     arguments:

@@ -3,15 +3,15 @@
 namespace command;
 
 use contracts\queue\QueueInterface;
-use contracts\repository\UrlStatisticRepositoryInterface;
+use contracts\repository\ReportRepositoryInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use repository\dto\UrlStatDto;
 
 class Receiver
 {
     public function __construct(
-        private QueueInterface                  $queue,
-        private UrlStatisticRepositoryInterface $urlStatisticRepository,
+        private QueueInterface            $queue,
+        private ReportRepositoryInterface $urlStatisticRepository,
     ){}
 
     public function run(): void

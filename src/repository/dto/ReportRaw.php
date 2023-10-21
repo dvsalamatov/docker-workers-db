@@ -3,9 +3,8 @@
 namespace repository\dto;
 
 use DateTime;
-use Stringable;
 
-class ReportRaw implements Stringable
+class ReportRaw
 {
     private int $sumCountLines;
     private float $avgLength;
@@ -25,14 +24,43 @@ class ReportRaw implements Stringable
         return $reportRaw;
     }
 
-    public function __toString(): string
+    /**
+     * @return int
+     */
+    public function getSumCountLines(): int
     {
-        return implode(', ', [
-            'Sum Count Lines = ' . $this->sumCountLines,
-            'Average Length = ' . $this->avgLength,
-            'Group Minute = ' . $this->minute,
-            'Min Time = ' . $this->minTime->format('Y-m-d H:i:s'),
-            'Max Time = ' . $this->maxTime->format('Y-m-d H:i:s'),
-        ]);
+        return $this->sumCountLines;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAvgLength(): float
+    {
+        return $this->avgLength;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinute(): int
+    {
+        return $this->minute;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getMaxTime(): DateTime
+    {
+        return $this->maxTime;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getMinTime(): DateTime
+    {
+        return $this->minTime;
     }
 }
