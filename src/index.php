@@ -1,27 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+use contracts\repository\UrlStatisticRepositoryInterface;
+
+require __DIR__ . '/config/bootstrap.php';
+
+global $container;
 
 /**
- * Hide AmqpLib warnings with deprecated type
+ * @var $repository UrlStatisticRepositoryInterface
  */
-error_reporting(E_ALL & ~E_DEPRECATED);
+$repository = $container->get(UrlStatisticRepositoryInterface::class);
 
-require __DIR__ . '/vendor/autoload.php';
+$res = $repository->getStatistic();
 
-
-$dotenv = Dotenv\Dotenv::createMutable(__DIR__);
-$dotenv->load();
-
-//phpinfo();
-
-try {
-    $db = new PDO('mysql:host=db;dbname=demo', 'user1', 'pass');
-
-    $stmt = $db->query("SELECT * FROM sad");
-    while ($row = $stmt->fetch())
-    {
-        echo '<pre>';
-        print_r($row);
-    }
-} catch (\Throwable $e) {
-    echo "<pre>";print_r($e->getMessage());echo "</pre>";die;
+foreach ($res as $num => $item) {
+    echo $num + 1 . ': ' . $item . '<br>';
 }

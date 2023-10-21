@@ -4,6 +4,7 @@ namespace repository;
 
 use contracts\repository\UrlStatisticRepositoryInterface;
 use PDO;
+use repository\dto\ReportRaw;
 use repository\dto\UrlStatDto;
 
 class UrlStatMariaDbRepository implements UrlStatisticRepositoryInterface
@@ -21,5 +22,32 @@ class UrlStatMariaDbRepository implements UrlStatisticRepositoryInterface
         ];
 
         $this->db->prepare($insStatSql)->execute($params);
+    }
+
+    /**
+     * @return ReportRaw[]
+     */
+    public function getStatistic(): array
+    {
+        $sql = '
+            SELECT
+                SUM(countLines) as sumCountLines,
+                AVG(length) as avgLength,
+                EXTRACT(MINUTE from timestamp) as minute,
+                MAX(timestamp) as maxTime,
+                MIN(timestamp) as minTime
+            FROM report
+            GROUP BY minute
+        ';
+
+        $stmt = $this->db->query($sql);
+
+        $res = [];
+
+        while ($row = $stmt->fetch()) {
+            $res[] = (new ReportRaw())->createFromRaw($row);
+        }
+
+        return $res;
     }
 }
