@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: db
--- Время создания: Окт 16 2023 г., 15:22
+-- Время создания: Окт 21 2023 г., 15:43
 -- Версия сервера: 11.1.2-MariaDB-1:11.1.2+maria~ubu2204
 -- Версия PHP: 8.2.8
 
@@ -33,6 +33,16 @@ CREATE TABLE `report` (
   `countLines` int(11) NOT NULL COMMENT 'Count of lines',
   `length` int(11) NOT NULL COMMENT 'Content length'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `report`
+--
+ALTER TABLE `report`
+  ADD KEY `timestamp` (`timestamp`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
