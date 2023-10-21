@@ -1,5 +1,7 @@
 parameters:
   queue.name: hello
+  file_reader.file_name: urls.txt
+  system.app_dir: /var/www/php
 
 services:
   components\db\DB:
@@ -12,7 +14,7 @@ services:
   contracts\queue\QueueInterface:
     class: queue\Queue
     arguments: ['%queue.name%']
-# TODO Use Autowire for Receiver and Sender
+# TODO Use Autowire for next defenitions
   command\Receiver:
     class: command\Receiver
     arguments:
@@ -22,3 +24,7 @@ services:
     class: command\Sender
     arguments:
       - '@contracts\queue\QueueInterface'
+      - '@contracts\fileReader\FileReaderInterface'
+  contracts\fileReader\FileReaderInterface:
+    class: components\fileReader\FileReaderArray
+    arguments: ['%system.app_dir%', '%file_reader.file_name%']

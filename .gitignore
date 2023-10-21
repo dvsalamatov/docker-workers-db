@@ -1,3 +1,4 @@
 vendor
 src/supervisord.log
 src/supervisord.pid
+src/urls.txt
