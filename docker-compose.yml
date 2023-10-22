@@ -101,19 +101,6 @@ services:
       retries: 10
       timeout: 10s
 
-  clickhouse-server:
-    image: yandex/clickhouse-server
-    container_name: clickhouse-server
-    ports:
-      - '8123:8123'
-      - '9000:9000'
-    volumes:
-      - clickhouddata:/var/lib/clickhouse
-      - ./docker/clickhouse/sql:/docker-entrypoint-initdb.d/:rw
-    ulimits:
-      nofile: 262144
-
 volumes:
   rabbitmqdata:
   dbdata:
-  clickhouddata:
